@@ -5,13 +5,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/*
+ * Klasa WordGenerator pobiera od użytkownika znaki,
+ * usuwa te które się powtarzają oraz robi z nich listę.
+ * Następnie WordCreator tworzy z otrzymanej listy wszystkie
+ * możliwe kombinacje tych znaków
+ */
+
 public class WordGenerator {
     public static List<String> generateWords(String letters) {
         List<String> result = new ArrayList<>();
 
         wordCreator("", letters, result);
 
-        // Usunięcie duplikatów z listy słów
+
         Set<String> uniqueChar = new HashSet<>(result);
         result.clear();
         result.addAll(uniqueChar);

@@ -25,6 +25,12 @@ class Letters implements ActionListener {
         wordGen();
     }
 
+    
+/* wordGen pobiera od uzytkownika znaki
+ * sprawdza czy w każdym polu jest maksymalnie jeden znak lub
+ * czy wszystkie pola są puste
+ * i ewentualnie wyświetla error 
+*/
     private void wordGen() {
         StringBuilder sb = new StringBuilder();
 
@@ -58,7 +64,9 @@ class Letters implements ActionListener {
         wordsTA.setText(sb.toString());
     }
 }
-
+/*
+ * SW odpowiada za wczytywanie wcześniej wygenereowanych wyników z pliku
+ */
 class SW implements ActionListener {
     private JTextArea wordsTA;
 
@@ -90,7 +98,9 @@ class SW implements ActionListener {
         }
     }
 }
-
+/*
+ * LW odopwiada za zapisywanie wyników do pliku
+ */
 class LW implements ActionListener {
     private JTextArea wordsTA;
 
@@ -121,6 +131,10 @@ class LW implements ActionListener {
     }
 }
 
+/*
+ * W Main zawarty cały kod związany z interfejsem graficznym 
+ * Każdy element jest zamknięty w swojej metodzie
+ */
 public class Main extends JFrame {
     private static final long serialVersionUID = 1L;
 
