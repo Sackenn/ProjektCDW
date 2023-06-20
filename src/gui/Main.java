@@ -1,16 +1,16 @@
+package gui;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
 
 
+import logic.WordGenerator;
+import logic.FileManager;
 
 class Letters implements ActionListener {
     private List<JTextField> LetterF;
@@ -49,7 +49,7 @@ class Letters implements ActionListener {
             return;
         }
 
-        List<String> genWords = wordGen(letters);
+        List<String> genWords = WordGenerator.generateWords(letters);
 
         sb = new StringBuilder();
         for (String word : genWords) {
@@ -57,38 +57,7 @@ class Letters implements ActionListener {
         }
         wordsTA.setText(sb.toString());
     }
-
-    private List<String> wordGen(String letters) {
-        List<String> result = new ArrayList<>();
-
-        wordCreator("", letters, result);
-
-        // Usunięcie duplikatów z listy słów
-        Set<String> uniqueChar = new HashSet<>(result);
-        result.clear();
-        result.addAll(uniqueChar);
-
-        return result;
-    }
-
-    private void wordCreator(String prefix, String lettersR, List<String> result) {
-        if (lettersR.length() == 0) {
-            result.add(prefix);
-            return;
-        }
-
-        for (int i = 0; i < lettersR.length(); i++) {
-            char cLetter = lettersR.charAt(i);
-
-            String nPrefix = prefix + cLetter;
-            String nLettersR = lettersR.substring(0, i)
-                    + lettersR.substring(i + 1);
-
-            wordCreator(nPrefix, nLettersR, result);
-        }
-    }
 }
-
 
 class SW implements ActionListener {
     private JTextArea wordsTA;
@@ -109,9 +78,8 @@ class SW implements ActionListener {
         if (userChoice == JFileChooser.APPROVE_OPTION) {
             File selectedFile = files.getSelectedFile();
 
-            try (FileWriter writer = new FileWriter(selectedFile)) {
-                writer.write(wordsTA.getText());
-                writer.flush();
+            try {
+                FileManager.saveToFile(selectedFile, wordsTA.getText());
 
                 JOptionPane.showMessageDialog(null, "Słowa zostały zapisane do pliku.", "Sukces",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -122,7 +90,6 @@ class SW implements ActionListener {
         }
     }
 }
-
 
 class LW implements ActionListener {
     private JTextArea wordsTA;
@@ -143,12 +110,9 @@ class LW implements ActionListener {
         if (userChoice == JFileChooser.APPROVE_OPTION) {
             File selectedFile = files.getSelectedFile();
 
-            try (Scanner scanner = new Scanner(selectedFile)) {
-                StringBuilder sb = new StringBuilder();
-                while (scanner.hasNextLine()) {
-                    sb.append(scanner.nextLine()).append("\n");
-                }
-                wordsTA.setText(sb.toString());
+            try {
+                String fileContent = FileManager.loadFromFile(selectedFile);
+                wordsTA.setText(fileContent);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas wczytywania pliku.", "Błąd",
                         JOptionPane.ERROR_MESSAGE);
