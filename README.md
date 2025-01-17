@@ -1,4 +1,3 @@
-Oskar 21491 Informatyka C1
 # Chętni na współpracę w ramach repozytorium, code review, merge itp.
 
 1. Piotr Bobiński Priv
